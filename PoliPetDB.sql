@@ -93,7 +93,29 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-
+-- 1-A --
+DELIMITER //
+create procedure animalesAdopcion()
+begin
+    declare idAnimal int;
+    declare nombre varchar(45);
+    declare especie varchar(45);
+    declare raza varchar(45);
+    declare edad int;
+    declare genero varchar(45);
+    declare done boolean default false;
+    declare cursor1 cursor for select animales.idAnimal, animales.nombre, animales.especie, animales.raza, animales.edad, animales.genero from animales inner join solicitud;
+    declare continue handler for not found set done = true;
+    open cursor1;
+    read_loop : loop
+        fetch cursor1 into idAnimal, nombre, especie, raza, edad, genero;
+        select idAnimal, nombre, especie, raza, edad, genero;
+        if done then leave read_loop;
+        end if;
+    end loop;
+    close cursor1;
+end //
+DELIMITER ;
 -- 1-B --
 delimiter //
 create procedure esValida (in idPersona_ int, in idAnimal_ int, out valida boolean)
