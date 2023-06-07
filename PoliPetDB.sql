@@ -53,11 +53,11 @@ CREATE TABLE IF NOT EXISTS `mydb`.`vacuna` (
   `nombre` VARCHAR(45) NULL,
   `dosis` FLOAT NULL,
   `fecha` DATE NULL,
-  `animales_idAnimal` INT NOT NULL,
+  `animal_idAnimal` INT NOT NULL,
   PRIMARY KEY (`idVacuna`),
-  INDEX `fk_vacunas_animales1_idx` (`animales_idAnimal` ASC) VISIBLE,
-  CONSTRAINT `fk_vacunas_animales1`
-    FOREIGN KEY (`animales_idAnimal`)
+  INDEX `fk_vacuna_animal1_idx` (`animal_idAnimal` ASC) VISIBLE,
+  CONSTRAINT `fk_vacuna_animal1`
+    FOREIGN KEY (`animal_idAnimal`)
     REFERENCES `mydb`.`animal` (`idAnimal`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -92,3 +92,16 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+-- 1-B --
+delimiter //
+create procedure esValida (in idPersona_ int, in idAnimal_ int, out valida boolean)
+begin
+if ((select edad from persona where idPersona = idPersona_) >= 18 and 1 <= (select count(*) from vacuna where animal_idAnimal = idAnimal_ and fecha = year(GETDATE()))) then
+set valida = true;
+else 
+set valida = false;
+end if;
+end//
+delimiter ;
