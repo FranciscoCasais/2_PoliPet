@@ -127,3 +127,46 @@ set valida = false;
 end if;
 end//
 delimiter ;
+
+
+-- 1-C --
+DELIMITER //
+CREATE FUNCTION porcentajeAnimales(especie_ varchar(45))
+RETURNS INT
+BEGIN
+    declare aux int;
+    declare total int;
+    select count(*) from animal into total;
+    select count(*) from animal where especie_ = especie and idAnimal in (select animal_idAnimal from vacunas) into aux;                      
+	set porcentaje = (aux/100)*total;
+    RETURN (porcentaje);
+END //
+DELIMITER ;
+
+
+
+-- 1-D --
+DELIMITER //
+CREATE FUNCTION adopcionesPersona (idPersona_ int)
+RETURNS int
+BEGIN 	
+	declare cantAdop int;
+    select count(*) from solicitud where idPersona_ = idPersona and fechaAdopcion = month(GETDATE()) into cantAdop;
+	return (antAdop);
+END //
+DELIMITER ;
+
+-- 1-E --
+DELIMITER //	
+CREATE FUNCTION masAdopciones ()
+RETURNS varchar(45)
+BEGIN
+  declare correo_ varchar(45);
+  declare aux int;
+  create view adopciones as select cliente.idCLiente, Cliente.correo as correo, count(solicitud.idSolicitud) as cant from cliente join solicitud group by idCliente;
+  select correo, max(cant) from adopciones into correo_, aux;	
+  RETURN correo_;
+END //
+DELIMITER ;
+
+
