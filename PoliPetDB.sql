@@ -163,7 +163,7 @@ RETURNS varchar(45)
 BEGIN
   declare correo_ varchar(45);
   declare aux int;
-  create view adopciones as select cliente.idCLiente, Cliente.correo as correo, count(solicitud.idSolicitud) as cant from cliente join solicitud group by idCliente;
+  create view adopciones as select cliente.idCLiente, cliente.email as correo, count(solicitud.idSolicitud) as cant from cliente join solicitud group by idCliente;
   select correo, max(cant) from adopciones into correo_, aux;	
   RETURN correo_;
 END //
