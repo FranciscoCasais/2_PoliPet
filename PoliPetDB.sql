@@ -1,3 +1,4 @@
+drop database mydb;
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -91,6 +92,12 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+
+/*select * from animal;
+select * from vacuna;
+/*select * from persona;
+select * from solicitud*/
+
 -- 1-A --
 DELIMITER //
 create procedure animalesAdopcion()
@@ -102,7 +109,7 @@ begin
     declare edad int;
     declare genero varchar(45);
     declare done boolean default false;
-    declare cursor1 cursor for select animales.idAnimal, animales.nombre, animales.especie, animales.raza, animales.edad, animales.genero from animales inner join solicitud;
+    declare cursor1 cursor for select animal.idAnimal, animal.nombre, animal.especie, animal.raza, animal.edad, animal.genero from animal inner join solicitud;
     declare continue handler for not found set done = true;
     open cursor1;
     read_loop : loop
@@ -131,13 +138,14 @@ delimiter ;
 DELIMITER //
 CREATE FUNCTION porcentajeAnimales(especie_ varchar(45))
 RETURNS INT
+READS SQL DATA
 BEGIN
-    declare aux int;
-    declare total int;
-    declare porcentaje double;
-    select count(*) from animal into total;
-    select count(*) from animal where especie_ = especie and idAnimal in (select animal_idAnimal from vacunas) into aux;                      
-	set porcentaje = (aux/100)*total;
+    DECLARE aux INT;
+    DECLARE total INT;
+    DECLARE porcentaje DOUBLE;
+    SELECT COUNT(*) INTO total FROM animal;
+    SELECT COUNT(*) INTO aux FROM animal WHERE especie = especie_ AND idAnimal IN (SELECT animal_idAnimal FROM vacunas);
+    SET porcentaje = (aux / CAST(100 AS decimal)) * total;
     RETURN (porcentaje);
 END //
 DELIMITER ;
@@ -148,6 +156,7 @@ DELIMITER ;
 DELIMITER //
 CREATE FUNCTION adopcionesPersona (idPersona_ int)
 RETURNS int
+READS SQL DATA
 BEGIN 	
 	declare cantAdop int;
     select count(*) from solicitud where idPersona_ = idPersona and fechaAdopcion = month(GETDATE()) into cantAdop;
@@ -156,17 +165,23 @@ END //
 DELIMITER ;
 
 -- 1-E --
-DELIMITER //	
-CREATE FUNCTION masAdopciones ()
-RETURNS varchar(45)
+DELIMITER //
+CREATE FUNCTION masAdopciones()
+RETURNS VARCHAR(255)
+READS SQL DATA
 BEGIN
-  declare correo_ varchar(45);
-  declare aux int;
-  create view adopciones as select cliente.idCLiente, cliente.email as correo, count(solicitud.idSolicitud) as cant from cliente join solicitud group by idCliente;
-  select correo, max(cant) from adopciones into correo_, aux;	
+  DECLARE correo_ VARCHAR(255);
+  DECLARE aux INT;
+  
+  SELECT cliente.email, COUNT(solicitud.idSolicitud)
+  INTO correo_, aux
+  FROM cliente
+  JOIN solicitud ON cliente.idCliente = solicitud.idCliente
+  GROUP BY cliente.email
+  ORDER BY COUNT(solicitud.idSolicitud) DESC
+  LIMIT 1;
   RETURN correo_;
 END //
 DELIMITER ;
-select * from solicitud;
 
 
