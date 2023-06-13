@@ -1,4 +1,12 @@
 -- MySQL Workbench Forward Engineering
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -70,7 +78,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `mydb`.`solicitud` (
   `animal_idAnimal` INT NOT NULL,
   `persona_idPersona` INT NOT NULL,
-  `estado` INT NULL,
+  `estado` Varchar(50) NULL,
   `fechaAdopcion` DATE NULL,
   `fechaEnvio` DATE NULL,
   PRIMARY KEY (`animal_idAnimal`, `persona_idPersona`),
@@ -194,3 +202,4 @@ end //
 delimiter ;
 call especiesPorSolicitud;
 drop procedure especiesPorSolicitud;
+select * from persona;
