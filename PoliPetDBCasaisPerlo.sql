@@ -1,3 +1,4 @@
+drop database mydb;
 -- MySQL Workbench Forward Engineering
 -- -----------------------------------------------------
 -- Schema mydb
@@ -104,102 +105,53 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- 1-A --
 DELIMITER //
 create procedure animalesAdopcion()
-begin
-    declare idAnimal int;
-    declare nombre varchar(45);
-    declare especie varchar(45);
-    declare raza varchar(45);
     declare edad int;
     declare genero varchar(45);
     declare done boolean default false;
-    declare cursor1 cursor for select animales.idAnimal, animales.nombre, animales.especie, animales.raza, animales.edad, animales.genero from animales inner join solicitud;
+    declare cursor1 cursor for select animal.idAnimal, animal.nombre, animal.especie, animal.raza, animal.edad, animal.genero from animal inner join solicitud;
     declare continue handler for not found set done = true;
     open cursor1;
     read_loop : loop
-        fetch cursor1 into idAnimal, nombre, especie, raza, edad, genero;
-        select idAnimal, nombre, especie, raza, edad, genero;
-        if done then leave read_loop;
-        end if;
-    end loop;
-    close cursor1;
-end //
-DELIMITER ;
--- 1-B --
-delimiter //
-create procedure esValida (in idPersona_ int, in idAnimal_ int, out valida boolean)
-begin
-if ((select edad from persona where idPersona = idPersona_) >= 18 and 1 <= (select count(*) from vacuna where animal_idAnimal = idAnimal_ and fecha = year(GETDATE()))) then
-set valida = true;
-else 
-set valida = false;
-end if;
-end//
-delimiter ;
-
-
--- 1-C --
 DELIMITER //
 CREATE FUNCTION porcentajeAnimales(especie_ varchar(45))
 RETURNS INT
+READS SQL DATA
 BEGIN
-    declare aux int;
-    declare total int;
-    select count(*) from animal into total;
-    select count(*) from animal where especie_ = especie and idAnimal in (select animal_idAnimal from vacunas) into aux;                      
-	set porcentaje = (aux/100)*total;
+    DECLARE aux INT;
+    DECLARE total INT;
+    DECLARE porcentaje DOUBLE;
+    SELECT COUNT(*) INTO total FROM animal;
+    SELECT COUNT(*) INTO aux FROM animal WHERE especie = especie_ AND idAnimal IN (SELECT animal_idAnimal FROM vacunas);
+    SET porcentaje = (aux / CAST(100 AS decimal)) * total;
     RETURN (porcentaje);
 END //
 DELIMITER ;
-
-
-
--- 1-D --
 DELIMITER //
 CREATE FUNCTION adopcionesPersona (idPersona_ int)
 RETURNS int
+READS SQL DATA
 BEGIN 	
 	declare cantAdop int;
     select count(*) from solicitud where idPersona_ = idPersona and fechaAdopcion = month(GETDATE()) into cantAdop;
-	return (antAdop);
-END //
 DELIMITER ;
 
 -- 1-E --
-DELIMITER //	
-CREATE FUNCTION masAdopciones ()
-RETURNS varchar(45)
+DELIMITER //
+CREATE FUNCTION masAdopciones()
+RETURNS VARCHAR(255)
+READS SQL DATA
 BEGIN
-  declare correo_ varchar(45);
-  declare aux int;
-  create view adopciones as select cliente.idCLiente, Cliente.correo as correo, count(solicitud.idSolicitud) as cant from cliente join solicitud group by idCliente;
-  select correo, max(cant) from adopciones into correo_, aux;	
+  DECLARE correo_ VARCHAR(255);
+  DECLARE aux INT;
+
+  SELECT cliente.email, COUNT(solicitud.idSolicitud)
+  INTO correo_, aux
+  FROM cliente
+  JOIN solicitud ON cliente.idCliente = solicitud.idCliente
+  GROUP BY cliente.email
+  ORDER BY COUNT(solicitud.idSolicitud) DESC
+  LIMIT 1;
   RETURN correo_;
 END //
 DELIMITER ;
 
--- 1)f)
-delimiter //
-create procedure especiesPorSolicitud()
-begin
-	declare idAnimal int;
-    declare especieAnimal varchar(45);
-	declare numeroSolicitud int default 1;
-	declare terminar boolean default 0;
-    declare nombreCursor cursor for select animal_idAnimal from solicitud;
-    declare continue handler for not found set terminar=1;
-    open nombreCursor;
-    bucle:loop
-		fetch nombreCursor into idAnimal;
-        if terminar=1 then
-			leave bucle;
-		end if;
-        select animal.especie into especieAnimal from animal where animal.idAnimal=idAnimal;
-        select numeroSolicitud as "N° de solicitud",especieAnimal as "Especie del animal";
-        set numeroSolicitud=numeroSolicitud+1;
-	end loop bucle;
-    close nombreCursor;
-end //
-delimiter ;
-call especiesPorSolicitud;
-drop procedure especiesPorSolicitud;
-select * from persona;
