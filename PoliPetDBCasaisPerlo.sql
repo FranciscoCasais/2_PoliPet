@@ -79,7 +79,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `mydb`.`solicitud` (
   `animal_idAnimal` INT NOT NULL,
   `persona_idPersona` INT NOT NULL,
-  `estado` Varchar(50) NULL,
+  `estado` int NULL,
   `fechaAdopcion` DATE NULL,
   `fechaEnvio` DATE NULL,
   PRIMARY KEY (`animal_idAnimal`, `persona_idPersona`),
