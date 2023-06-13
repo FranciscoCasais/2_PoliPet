@@ -15,6 +15,18 @@ CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
 -- -----------------------------------------------------
+-- Table `mydb`.`solicitud`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`solicitud` (
+  `idSolicitud` INT NOT NULL,
+  `estado` VARCHAR(45) NULL,
+  `fechaAdopcion` DATE NULL,
+  `fechaEnvio` DATE NULL,
+  PRIMARY KEY (`idSolicitud`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `mydb`.`animal`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`animal` (
@@ -25,7 +37,14 @@ CREATE TABLE IF NOT EXISTS `mydb`.`animal` (
   `edad` VARCHAR(45) NULL,
   `descripcion` VARCHAR(400) NULL,
   `genero` VARCHAR(45) NULL,
-  PRIMARY KEY (`idAnimal`))
+  `solicitudes_idSolicitud` INT NOT NULL,
+  PRIMARY KEY (`idAnimal`),
+  INDEX `fk_animales_solicitudes1_idx` (`solicitudes_idSolicitud` ASC) VISIBLE,
+  CONSTRAINT `fk_animales_solicitudes1`
+    FOREIGN KEY (`solicitudes_idSolicitud`)
+    REFERENCES `mydb`.`solicitud` (`idSolicitud`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -34,14 +53,20 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`persona` (
   `idPersona` INT NOT NULL,
-  `edad` INT NULL,
   `nombre` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
   `telefono` INT NULL,
   `direccion` VARCHAR(45) NULL,
   `ocupacion` VARCHAR(45) NULL,
   `experiencia` VARCHAR(45) NULL,
-  PRIMARY KEY (`idPersona`))
+  `solicitudes_idSolicitud` INT NOT NULL,
+  PRIMARY KEY (`idPersona`),
+  INDEX `fk_personas_solicitudes1_idx` (`solicitudes_idSolicitud` ASC) VISIBLE,
+  CONSTRAINT `fk_personas_solicitudes1`
+    FOREIGN KEY (`solicitudes_idSolicitud`)
+    REFERENCES `mydb`.`solicitud` (`idSolicitud`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -50,44 +75,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`vacuna` (
   `idVacuna` INT NOT NULL,
-  `nombre` VARCHAR(45) NULL,
-  `dosis` FLOAT NULL,
+  `dosis` INT NULL,
   `fecha` DATE NULL,
-  `animal_idAnimal` INT NOT NULL,
+  `animales_idAnimal` INT NOT NULL,
   PRIMARY KEY (`idVacuna`),
-  INDEX `fk_vacuna_animal1_idx` (`animal_idAnimal` ASC) VISIBLE,
-  CONSTRAINT `fk_vacuna_animal1`
-    FOREIGN KEY (`animal_idAnimal`)
+  INDEX `fk_vacunas_animales1_idx` (`animales_idAnimal` ASC) VISIBLE,
+  CONSTRAINT `fk_vacunas_animales1`
+    FOREIGN KEY (`animales_idAnimal`)
     REFERENCES `mydb`.`animal` (`idAnimal`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`solicitud`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`solicitud` (
-  `animal_idAnimal` INT NOT NULL,
-  `persona_idPersona` INT NOT NULL,
-  `estado` INT NULL,
-  `fechaAdopcion` DATE NULL,
-  `fechaEnvio` DATE NULL,
-  PRIMARY KEY (`animal_idAnimal`, `persona_idPersona`),
-  INDEX `fk_animal_has_persona_persona1_idx` (`persona_idPersona` ASC) VISIBLE,
-  INDEX `fk_animal_has_persona_animal1_idx` (`animal_idAnimal` ASC) VISIBLE,
-  CONSTRAINT `fk_animal_has_persona_animal1`
-    FOREIGN KEY (`animal_idAnimal`)
-    REFERENCES `mydb`.`animal` (`idAnimal`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_animal_has_persona_persona1`
-    FOREIGN KEY (`persona_idPersona`)
-    REFERENCES `mydb`.`persona` (`idPersona`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -136,6 +134,7 @@ RETURNS INT
 BEGIN
     declare aux int;
     declare total int;
+    declare porcentaje double;
     select count(*) from animal into total;
     select count(*) from animal where especie_ = especie and idAnimal in (select animal_idAnimal from vacunas) into aux;                      
 	set porcentaje = (aux/100)*total;
@@ -168,5 +167,6 @@ BEGIN
   RETURN correo_;
 END //
 DELIMITER ;
+select * from solicitud;
 
 
