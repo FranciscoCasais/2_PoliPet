@@ -199,7 +199,7 @@ begin
 	end loop bucle;
     close nombreCursor;
 end //
-delimiter ; 
+delimiter ;
 call especiesPorSolicitud;
 drop procedure especiesPorSolicitud;
 select * from persona;
