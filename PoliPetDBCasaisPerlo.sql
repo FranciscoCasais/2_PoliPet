@@ -155,3 +155,26 @@ BEGIN
 END //
 DELIMITER ;
 
+-- 1)f)
+delimiter //
+create procedure especiesPorSolicitud()
+begin
+	declare idAnimal int;
+    declare especieAnimal varchar(45);
+	declare numeroSolicitud int default 1;
+	declare terminar boolean default 0;
+    declare nombreCursor cursor for select animal_idAnimal from solicitud;
+    declare continue handler for not found set terminar=1;
+    open nombreCursor;
+    bucle:loop
+		fetch nombreCursor into idAnimal;
+        if terminar=1 then
+			leave bucle;
+		end if;
+        select animal.especie into especieAnimal from animal where animal.idAnimal=idAnimal;
+        select numeroSolicitud as "N° de solicitud",especieAnimal as "Especie del animal";
+        set numeroSolicitud=numeroSolicitud+1;
+	end loop bucle;
+    close nombreCursor;
+end //
+delimiter ;s
