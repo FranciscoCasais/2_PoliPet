@@ -177,4 +177,5 @@ begin
 	end loop bucle;
     close nombreCursor;
 end //
-delimiter ;s
+delimiter ;
+select * from animal;
