@@ -62,8 +62,9 @@ INSERT INTO `PoliPet`.`Animal` (`ID`, `Nombre`, `Especie`, `Raza`, `Fecha_nacimi
        	(NULL, 'Max', 'Perro', 'Rottweiler', '2020-06-18', 'Macho', 'Max es un perro fuerte y protector'),
        	(NULL, 'Luna', 'Gato', 'Siames', '2019-08-20', 'Hembra', 'Luna es una gata curiosa y sociable'),
        	(NULL, 'Cooper', 'Perro', 'Bulldog Inglés', '2018-11-01', 'Macho', 'Cooper es un perro cariñoso y fiel'),
-       	(NULL, 'Milo', 'Gato', 'Birmano', '2020-06-05', 'Macho', 'Milo es un gato tranquilo y afectuoso');
-       
+       	(NULL, 'Milo', 'Gato', 'Birmano', '2020-06-05', 'Macho', 'Milo es un gato tranquilo y afectuoso'),
+        (NULL, 'Max', 'Perro', 'Labrador Retriever', '2019-01-15', 'Macho', 'Max es un perro amigable y juguetón');
+        
 INSERT INTO `PoliPet`.`Persona` (`ID`, `Nombre_completo`, `Email`, `Telefono`, `Direccion`, `Fecha_nacimiento`, `Ocupacion`, 
 	`Experiencia_previa`) VALUES
 	(NULL, 'Juan Perez', 'juan@example.com', '123456789', 'Calle 123', '1990-05-15', 'Estudiante', 1),

@@ -134,7 +134,7 @@ delimiter //
 
 create procedure animalesSolicitados()
 begin
-	select ID from Animal inner join Solicitud;
+	select Animal_ID from Solicitud;
 end //
 
 create function mayorDeEdad(fecha date) returns boolean deterministic
@@ -155,7 +155,7 @@ create procedure esValida(in idAnimal int,in idPersona int,out resultado boolean
 begin
 	declare fecha date;
     set fecha=(select Fecha_nacimiento from Persona where ID=idPersona);
-	if mayorDeEdad(fecha) and 1<=(select count(*) from DetallesVacuna where Animal_ID=idAnimal and year(Fecha)=year(current_date())) then set resultado=true;
+	if mayorDeEdad(fecha) and 1<=(select count(*) from DetallesVacuna where Animal_ID=idAnimal and year(DetallesVacuna.Fecha)=year(current_date())) then set resultado=true;
     else set resultado=false;
     end if;
 end//
@@ -188,7 +188,7 @@ end //
 
 create procedure especiesSolicitadas()
 begin
-	select Especie from Animal inner join Solicitud;
+	select Especie from Animal inner join Solicitud on ID=Animal_ID;
 end //
 
 delimiter ;
