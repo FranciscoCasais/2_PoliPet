@@ -64,6 +64,17 @@ public class Persona {
         this.telefono=telefono;
     }
 
+    @Override
+    public String toString() {
+        return "nombre: " + nombre +
+                ", telefono: " + telefono +
+                ", direccion: " + direccion +
+                ", correo: " + correo +
+                ", fechaNacimiento: " + fechaNacimiento +
+                ", ocupacion: " + ocupacion +
+                ", experiencia: " + experiencia;
+    }
+
     public int calcularEdad() {
         int edad;
         if(LocalDate.now().getDayOfYear()>=fechaNacimiento.getDayOfYear()){

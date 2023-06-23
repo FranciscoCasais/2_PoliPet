@@ -17,13 +17,19 @@ public class Main {
             System.out.println(ex);
         }
 
-        ArrayList<String> pedrosConsulta = new ArrayList<>();
+        Sistema sist=new Sistema();
+        sist.setAnimales(bdd.obtenerValoresAnimal());
+        sist.setPersonas(bdd.obtenerValoresPersona());
+        sist.setSolicitudes(bdd.obtenerValoresSolicitud());
 
-        //pedrosConsulta = bdd.obtenerValoresAnimal();
-
-        for(String s:pedrosConsulta){
-            System.out.println(s);
+        for(Animal a:sist.getAnimales()){
+            System.out.println(a.toString());
         }
-
+        for(Persona p: sist.getPersonas()){
+            System.out.println(p.toString());
+        }
+        for(Solicitud s: sist.getSolicitudes()){
+            System.out.println(s.toString());
+        }
     }
 }

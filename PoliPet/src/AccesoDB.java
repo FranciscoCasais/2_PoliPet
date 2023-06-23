@@ -58,6 +58,53 @@ public class AccesoDB {
         }
         return id;
     }
+    public Animal obtenerAnimalPorId(int idAnimal) {
+        ResultSet data;
+        Animal animal=new Animal();
+        String consulta= "Select ID, Nombre, Especie, Raza, Fecha_nacimiento, Genero, Descripcion from Animal WHERE ID = "+idAnimal+";";
+        try {
+            PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
+            data = sentenciaSQL.executeQuery(consulta);
+            while (data.next()) {
+                animal=(new Animal(obtenerValoresVacuna(data.getString("ID")), LocalDate.of(Integer.parseInt(data.getString("Fecha_nacimiento").substring(0, 4)),Integer.parseInt(data.getString("Fecha_nacimiento").substring(5, 7)), Integer.parseInt(data.getString("Fecha_nacimiento").substring(8, 10))), data.getString("Descripcion"), data.getString("Especie"), data.getString("Genero"), data.getString("Nombre"), data.getString("Raza")));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return animal;
+    }
+    public Persona obtenerPersonaPorId(int idPersona) {
+        ResultSet data;
+        Persona persona=new Persona();
+        String consulta= "Select * from Persona;";
+        try {
+            PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
+            data = sentenciaSQL.executeQuery(consulta);
+            while (data.next() == true) {
+                persona=(new Persona(data.getBoolean("Experiencia_previa"),LocalDate.of(Integer.parseInt(data.getString("Fecha_nacimiento").substring(0, 4)),Integer.parseInt(data.getString("Fecha_nacimiento").substring(5, 7)), Integer.parseInt(data.getString("Fecha_nacimiento").substring(8, 10))),data.getString("Email"),data.getString("Direccion"),data.getString("Nombre_completo"),data.getString("Ocupacion"),data.getString("Telefono")));
+            }
+        } catch (SQLException ex) { ex.printStackTrace(); }
+        return persona;
+    }
+    public Estado obtenerEstadoPorId(int idEstado) {
+        ResultSet data;
+        String estadoStr="";
+        Estado estado = null;
+        String consulta= "Select Detalles FROM Estado WHERE ID ="+idEstado+";";
+        try {
+            PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
+            data = sentenciaSQL.executeQuery(consulta);
+            while (data.next() == true) {
+                estadoStr = data.getString("Detalles").toUpperCase();
+                try {
+                    estado = Estado.valueOf(estadoStr);
+                    String valorEstado = estado.getEstado();
+
+                } catch (IllegalArgumentException e) {  }
+            }
+        } catch (SQLException ex) { ex.printStackTrace(); }
+        return estado;
+    }
 
     public ArrayList<String> obtenerSelectConMasDeUnValor(String nombreTabla, String nombreCampo,String columnaTabla,Object condicion){
         ResultSet data;
@@ -75,22 +122,7 @@ public class AccesoDB {
         }
         return valorCampo;
     }
-    /*public ArrayList<String> obtenerValoresAnimal(){ // Barbieri dijo que esta función debería devolver animales y no Strings. Abajo de este método está lo que avanzamos.
-        ResultSet data;
-        ArrayList<String> valorCampo=new ArrayList<>();
-        String consulta= "Select ID, Nombre, Especie, Raza, Fecha_nacimiento, Genero from Animal;";
-        System.out.println(consulta);
-        try {
-            PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
-            data = sentenciaSQL.executeQuery(consulta);
-            while (data.next() == true) {
-                valorCampo.add(data.getString("ID")+"-"+data.getString("Nombre")+"-"+data.getString("Especie")+"-"+data.getString("Raza")+"-"+data.getString("Fecha_nacimiento")+"-"+data.getString("Genero"));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return valorCampo;
-    }*/
+
 
     public HashSet<Vacuna> obtenerValoresVacuna(String ID){
         ResultSet data;
@@ -138,20 +170,34 @@ public class AccesoDB {
         } catch (SQLException ex) { ex.printStackTrace(); }
         return personas;
     }
-    public HashSet<Persona> obtenerValoresSolicitud() {
+    public HashSet<Solicitud> obtenerValoresSolicitud() {
         ResultSet data;
-        HashSet<Persona> personas=new HashSet<>();
-        String consulta= "Select * from Persona;";
+        HashSet<Solicitud> solicitudes=new HashSet<Solicitud>();
+        String consulta= "Select * from Solicitud;";
         try {
             PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
             data = sentenciaSQL.executeQuery(consulta);
             while (data.next() == true) {
-                personas.add(new Persona(data.getBoolean("Experiencia_previa"),LocalDate.of(Integer.parseInt(data.getString("Fecha_nacimiento").substring(0, 4)),Integer.parseInt(data.getString("Fecha_nacimiento").substring(5, 7)), Integer.parseInt(data.getString("Fecha_nacimiento").substring(8, 10))),data.getString("Email"),data.getString("Direccion"),data.getString("Nombre_completo"),data.getString("Ocupacion"),data.getString("Telefono")));
+                LocalDate aux=null;
+                if(data.getString("Fecha_adopcion")!=null){
+                    aux=LocalDate.of(
+                            Integer.parseInt(data.getString("Fecha_adopcion").substring(0, 4)),
+                            Integer.parseInt(data.getString("Fecha_adopcion").substring(5, 7)),
+                            Integer.parseInt(data.getString("Fecha_adopcion").substring(8, 10)));
+                }
+                solicitudes.add(new Solicitud(
+                        obtenerPersonaPorId(data.getInt("Persona_ID")),
+                        obtenerAnimalPorId(data.getInt("Animal_ID")),
+                        LocalDate.of(
+                                Integer.parseInt(data.getString("Fecha_envio").substring(0, 4)),
+                                Integer.parseInt(data.getString("Fecha_envio").substring(5, 7)),
+                                Integer.parseInt(data.getString("Fecha_envio").substring(8, 10))),
+                        obtenerEstadoPorId(data.getInt("Estado_ID")),
+                        aux));      //Hago esto porque si Fecha_adopcion es null se rompe
             }
         } catch (SQLException ex) { ex.printStackTrace(); }
-        return personas;
+        return solicitudes;
     }
-    
 }
 //File
 //Project Structure
