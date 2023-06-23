@@ -1,5 +1,5 @@
 public enum Estado {
-    PENDIENTE("Pendiente"),APROBADO("Aprobado"),RECHAZADO("Rechazado");
+    PENDIENTE("Pendiente"),APROBADA("Aprobada"),RECHAZADA("Rechazada");
     private String estado;
     private Estado(String estado) { this.estado=estado; }
     public String getEstado() { return estado; }
