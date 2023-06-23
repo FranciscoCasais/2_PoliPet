@@ -86,4 +86,18 @@ public class Sistema {
         for (Solicitud solicitud : solicitudes) if (!especies.contains(solicitud.getAnimal().getEspecie())) especies.add(solicitud.getAnimal().getEspecie());
         return especies;
     }
+     public Animal animalMasReciente(){//H
+        Animal masReciente = null;
+        LocalDate fecha = null;
+        for(Solicitud s: solicitudes){
+            if(masReciente==null){
+                masReciente=s.getAnimal();
+                fecha=s.getFechaAdopcion();
+            }else if(s.getEstado()==Estado.APROBADA && s.getFechaAdopcion().isAfter(fecha)){
+                masReciente=s.getAnimal();
+                fecha=s.getFechaAdopcion();
+            }
+        }
+        return masReciente;
+    }
 }
