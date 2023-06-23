@@ -46,14 +46,13 @@ public class Sistema {
             System.out.println(a.toString());
         }
     }
-    public Animal animalMenorEdad(){  //Calcula el animal de menor edad (en dias) cargado en el sistema,
-        Boolean primer=true;
+    public Animal animalMenorEdad(){//B
         Animal menor=new Animal();
         int edad=0;
-        int primero=0;
+        int primero=Integer.MAX_VALUE;
         for(Animal an:animales){
             edad=an.calcularEdad();
-            if(edad<primero || primer){
+            if(edad<=primero){
                 menor=an;
                 primero=edad;
             }
@@ -69,5 +68,22 @@ public class Sistema {
             }
         }
           //Si quiere cambienlo a que retorne un HashSet
+    }
+    public void corregirFechas(){//D
+        for (Animal animal : animales){
+            for (Vacuna vacuna : animal.getVacunas()){
+                vacuna.setFecha(vacuna.getFecha().minusMonths(1));
+            }
+        }
+    }
+    public HashSet<Persona> personasExperimentadas(){//F
+        HashSet<Persona> personasExperimentadas_ = new HashSet<Persona>();
+        for (Solicitud solicitud : solicitudes) if (solicitud.getSolicitante().getExperiencia()) personasExperimentadas_.add(solicitud.getSolicitante());
+        return personasExperimentadas_;
+    }
+    public HashSet<String> especiesSolicitadas(){//G
+        HashSet<String> especies = new HashSet<String>();
+        for (Solicitud solicitud : solicitudes) if (!especies.contains(solicitud.getAnimal().getEspecie())) especies.add(solicitud.getAnimal().getEspecie());
+        return especies;
     }
 }
