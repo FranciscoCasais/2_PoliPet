@@ -76,7 +76,7 @@ public class AccesoDB {
     public Persona obtenerPersonaPorId(int idPersona) {
         ResultSet data;
         Persona persona=new Persona();
-        String consulta= "Select * from Persona;";
+        String consulta= "Select * from Persona WHERE ID ="+idPersona+";";
         try {
             PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
             data = sentenciaSQL.executeQuery(consulta);
