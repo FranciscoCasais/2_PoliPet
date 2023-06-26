@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.time.LocalDate;
 public class Sistema {
     private HashSet<Animal> animales;
     private HashSet<Persona> personas;
@@ -33,7 +35,7 @@ public class Sistema {
         this.solicitudes=solicitudes;
     }
 
-    public void animalesSolicitud(){
+    public void animalesSolicitud(){//A
         HashSet<Animal> animalesSol=new HashSet<Animal>();//Es un HashSet por si hay varias solicutudes con el mismo animal
         for(Animal an : animales){
             for(Solicitud sol : solicitudes){
@@ -59,15 +61,17 @@ public class Sistema {
         }
         return menor;
     }
-    public void solicitudesNoValidas(){
+    public HashSet<Solicitud> solicitudesNoValidas(){//C
+        HashSet<Solicitud> solicitudes_ = new HashSet<Solicitud>();
         for(Solicitud s : solicitudes){
             if(!s.getSolicitante().mayorDeEdad()){
                 if(!s.getAnimal().verificarVacuna()){
                     System.out.println(s.toString());
+                    solicitudes_.add(s);
                 }
             }
         }
-          //Si quiere cambienlo a que retorne un HashSet
+        return solicitudes_;
     }
     public void corregirFechas(){//D
         for (Animal animal : animales){
@@ -75,6 +79,50 @@ public class Sistema {
                 vacuna.setFecha(vacuna.getFecha().minusMonths(1));
             }
         }
+    }
+    public HashSet<Persona> rompeReglas(){//E
+        HashSet<Persona> personas_ = new HashSet<Persona>();
+        for (Persona persona : personas){
+            HashSet<Solicitud> aux = new HashSet<Solicitud>();
+            ArrayList<Solicitud> solicitudes_ = new ArrayList<Solicitud>();
+            for (Solicitud solicitud : solicitudes)if (solicitud.getSolicitante().equals(persona)) aux.add(solicitud);
+            while (aux.size() >= 1){
+                Solicitud solicitudMasAntigua = new Solicitud();
+                boolean primer = true;
+                for (Solicitud solicitud : aux){
+                    if (primer){
+                        primer = false;
+                        solicitudMasAntigua = solicitud;
+                    }
+                    else if (solicitudMasAntigua.getFechaAdopcion().isBefore(solicitud.getFechaAdopcion())){
+                        solicitudMasAntigua = solicitud;
+                    }
+                }
+                aux.remove(solicitudMasAntigua);
+                solicitudes_.add(solicitudMasAntigua);
+            }
+            int anio=0, mes=0, cant=0;
+            for (Solicitud solicitud : solicitudes_){
+                if (anio == 0 && mes == 0){
+                    cant++;
+                    anio = solicitud.getFechaAdopcion().getYear();
+                    mes = solicitud.getFechaAdopcion().getMonthValue();
+                }
+                else if (anio == solicitud.getFechaAdopcion().getYear() && mes == solicitud.getFechaAdopcion().getMonthValue()){
+                    cant++;
+                    if (cant > 1){
+                        personas_.add(solicitud.getSolicitante());
+                        break;
+                    }
+                }
+                else{
+                    cant = 0;
+                    anio = solicitud.getFechaAdopcion().getYear();
+                    mes = solicitud.getFechaAdopcion().getMonthValue();
+                }
+            }
+        }
+        return personas_;
     }
     public HashSet<Persona> personasExperimentadas(){//F
         HashSet<Persona> personasExperimentadas_ = new HashSet<Persona>();

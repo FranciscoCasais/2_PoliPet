@@ -81,4 +81,10 @@ public class Animal {
         edad=(LocalDate.now().getDayOfYear()-fechaNacimiento.getDayOfYear()-1)*365+(LocalDate.now().getDayOfYear());
         return edad;
     }
+    public boolean esIgual(HashSet<Vacuna> vacunas,LocalDate fechaNacimiento,String descripcion,String especie,String genero,String nombre,String raza) {
+        if (this.vacunas.equals(vacunas) && this.fechaNacimiento.equals(fechaNacimiento) && this.descripcion.equals(descripcion) && this.especie.equals(especie) && this.genero.equals(genero) && this.nombre.equals(nombre) && this.raza.equals(raza)){
+            return true;
+        }
+        return false;
+    }
 }

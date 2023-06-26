@@ -20,7 +20,7 @@ public class Main {
         Sistema sist=new Sistema();
         sist.setAnimales(bdd.obtenerValoresAnimal());
         sist.setPersonas(bdd.obtenerValoresPersona());
-        sist.setSolicitudes(bdd.obtenerValoresSolicitud());
+        sist.setSolicitudes(bdd.obtenerValoresSolicitud(sist.getAnimales(), sist.getPersonas()));
 
         for(Animal a:sist.getAnimales()){
             System.out.println(a.toString());

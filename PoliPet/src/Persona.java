@@ -90,4 +90,10 @@ public class Persona {
         else if(LocalDate.now().getYear()-fechaNacimiento.getYear()==18 && LocalDate.now().getDayOfYear()>=fechaNacimiento.getDayOfYear()) { return true; }
         else { return false; }
     }
+    public boolean esIgual(boolean experiencia,LocalDate nacimiento,String correo,String direccion,String nombre,String ocupacion,String telefono) {
+        if(experiencia == this.experiencia && nacimiento.equals(this.fechaNacimiento) && correo.equals(this.correo) && direccion.equals(this.direccion) && nombre.equals(this.nombre) && ocupacion.equals(this.ocupacion) && telefono.equals(this.telefono)){
+            return true;
+        }
+        return false;
+    }
 }
