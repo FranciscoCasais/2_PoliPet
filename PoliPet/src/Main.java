@@ -21,8 +21,8 @@ public class Main {
         sist.setAnimales(bdd.obtenerValoresAnimal());
         sist.setPersonas(bdd.obtenerValoresPersona());
         sist.setSolicitudes(bdd.obtenerValoresSolicitud(sist.getAnimales(), sist.getPersonas()));
-
-        for(Animal a:sist.getAnimales()){
+        for (Animal animal : sist.getAnimales()) System.out.println(animal.getNombre());
+        /*for(Animal a:sist.getAnimales()){
             System.out.println(a.toString());
         }
         for(Persona p: sist.getPersonas()){
@@ -30,6 +30,6 @@ public class Main {
         }
         for(Solicitud s: sist.getSolicitudes()){
             System.out.println(s.toString());
-        }
+        }*/
     }
 }

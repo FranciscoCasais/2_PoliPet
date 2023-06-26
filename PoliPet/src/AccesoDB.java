@@ -243,6 +243,63 @@ public class AccesoDB {
         } catch (SQLException ex) { ex.printStackTrace(); }
         return solicitudes;
     }
+    public HashSet<Solicitud> obtenerValores() {
+        ResultSet data;
+        HashSet<Solicitud> solicitudes=new HashSet<Solicitud>();
+        String consulta= "Select * from Solicitud;";
+        try {
+            PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
+            data = sentenciaSQL.executeQuery(consulta);
+            while (data.next()) {
+                LocalDate aux=null;
+                if(data.getString("Fecha_adopcion")!=null){
+                    aux=LocalDate.of(
+                            Integer.parseInt(data.getString("Fecha_adopcion").substring(0, 4)),
+                            Integer.parseInt(data.getString("Fecha_adopcion").substring(5, 7)),
+                            Integer.parseInt(data.getString("Fecha_adopcion").substring(8, 10)));
+                }
+                solicitudes.add(new Solicitud(
+                        obtenerPersonaPorId(data.getInt("Persona_ID")),
+                        obtenerAnimalPorId(data.getInt("Animal_ID")),
+                        LocalDate.of(
+                                Integer.parseInt(data.getString("Fecha_envio").substring(0, 4)),
+                                Integer.parseInt(data.getString("Fecha_envio").substring(5, 7)),
+                                Integer.parseInt(data.getString("Fecha_envio").substring(8, 10))),
+                        obtenerEstadoPorId(data.getInt("Estado_ID")),
+                        aux));      //Hago esto porque si Fecha_adopcion es null se rompe
+            }
+        } catch (SQLException ex) { ex.printStackTrace(); }
+        return solicitudes;
+    }
+    //Las funciones de abajo no las probé
+    public HashSet<Animal> obtenerValoresAnimalSinSolicitudes(){
+        ResultSet data;
+        HashSet<Animal> animales=new HashSet<>();
+        String consulta= "Select ID, Nombre, Especie, Raza, Fecha_nacimiento, Genero, Descripcion from Animal where ID not in (select Animal_ID from Solicitud);";
+        try {
+            PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
+            data = sentenciaSQL.executeQuery(consulta);
+            while (data.next()) {
+                animales.add(new Animal(obtenerValoresVacuna(data.getString("ID")), LocalDate.of(Integer.parseInt(data.getString("Fecha_nacimiento").substring(0, 4)),Integer.parseInt(data.getString("Fecha_nacimiento").substring(5, 7)), Integer.parseInt(data.getString("Fecha_nacimiento").substring(8, 10))), data.getString("Descripcion"), data.getString("Especie"), data.getString("Genero"), data.getString("Nombre"), data.getString("Raza")));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return animales;
+    }
+    public HashSet<Persona> obtenerValoresPersonaSinSolicitudes(){
+        ResultSet data;
+        HashSet<Persona> personas=new HashSet<>();
+        String consulta= "Select * from Persona where ID not in (select Persona_ID from Solicitud);";
+        try {
+            PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
+            data = sentenciaSQL.executeQuery(consulta);
+            while (data.next()) {
+                personas.add(new Persona(data.getBoolean("Experiencia_previa"),LocalDate.of(Integer.parseInt(data.getString("Fecha_nacimiento").substring(0, 4)),Integer.parseInt(data.getString("Fecha_nacimiento").substring(5, 7)), Integer.parseInt(data.getString("Fecha_nacimiento").substring(8, 10))),data.getString("Email"),data.getString("Direccion"),data.getString("Nombre_completo"),data.getString("Ocupacion"),data.getString("Telefono")));
+            }
+        } catch (SQLException ex) { ex.printStackTrace(); }
+        return personas;
+    }
 }
 //File
 //Project Structure
