@@ -84,50 +84,25 @@ public class Sistema {
             }
         }
     }
-    public HashSet<Persona> rompeReglas(){//E
-        HashSet<Persona> personas_ = new HashSet<Persona>();
-        for (Persona persona : personas){
-            HashSet<Solicitud> aux = new HashSet<Solicitud>();
-            ArrayList<Solicitud> solicitudes_ = new ArrayList<Solicitud>();
-            for (Solicitud solicitud : solicitudes)if (solicitud.getSolicitante().equals(persona)) aux.add(solicitud);
-            while (aux.size() >= 1){
-                Solicitud solicitudMasAntigua = new Solicitud();
-                boolean primer = true;
-                for (Solicitud solicitud : aux){
-                    if (primer){
-                        primer = false;
-                        solicitudMasAntigua = solicitud;
+       public HashSet<Persona> rompeRegla(){//E
+            HashSet<Persona> lista = new HashSet<Persona>();
+            for(Solicitud s : solicitudes){
+                for(Solicitud solicitud : solicitudes){
+                    if(s.getSolicitante() == solicitud.getSolicitante() && !s.equals(solicitud)){
+                        Period periodo;
+                        if(solicitud.getFechaAdopcion().isAfter(s.getFechaAdopcion())){
+                            periodo=s.getFechaAdopcion().until(solicitud.getFechaAdopcion());
+                        }else{
+                            periodo=solicitud.getFechaAdopcion().until(s.getFechaAdopcion());
+                        }
+                        if(periodo.getMonths()>=1 && !lista.contains(s.getSolicitante())){
+                            lista.add(s.getSolicitante());
+                        }
                     }
-                    else if (solicitudMasAntigua.getFechaAdopcion().isBefore(solicitud.getFechaAdopcion())){
-                        solicitudMasAntigua = solicitud;
-                    }
-                }
-                aux.remove(solicitudMasAntigua);
-                solicitudes_.add(solicitudMasAntigua);
-            }
-            int anio=0, mes=0, cant=0;
-            for (Solicitud solicitud : solicitudes_){
-                if (anio == 0 && mes == 0){
-                    cant++;
-                    anio = solicitud.getFechaAdopcion().getYear();
-                    mes = solicitud.getFechaAdopcion().getMonthValue();
-                }
-                else if (anio == solicitud.getFechaAdopcion().getYear() && mes == solicitud.getFechaAdopcion().getMonthValue()){
-                    cant++;
-                    if (cant > 1){
-                        personas_.add(solicitud.getSolicitante());
-                        break;
-                    }
-                }
-                else{
-                    cant = 0;
-                    anio = solicitud.getFechaAdopcion().getYear();
-                    mes = solicitud.getFechaAdopcion().getMonthValue();
                 }
             }
+            return lista;
         }
-        return personas_;
-    }
     public HashSet<Persona> personasExperimentadas(){//F
         HashSet<Persona> personasExperimentadas_ = new HashSet<Persona>();
         for (Solicitud solicitud : solicitudes) if (solicitud.getSolicitante().getExperiencia()) personasExperimentadas_.add(solicitud.getSolicitante());
