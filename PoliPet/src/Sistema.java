@@ -50,13 +50,17 @@ public class Sistema {
     }
     public Animal animalMenorEdad(){//B
         Animal menor=new Animal();
-        int edad=0;
-        int primero=Integer.MAX_VALUE;
+        Boolean verif=true;
         for(Animal an:animales){
-            edad=an.calcularEdad();
-            if(edad<=primero){
-                menor=an;
-                primero=edad;
+            if(verif){
+                menor =an;
+                verif=false;
+            }else {
+                if (an.getFechaNacimiento().getYear() > menor.getFechaNacimiento().getYear()) {
+                    if (an.getFechaNacimiento().getDayOfYear() > menor.getFechaNacimiento().getDayOfYear()) {
+                        menor = an;
+                    }
+                }
             }
         }
         return menor;

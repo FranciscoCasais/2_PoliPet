@@ -170,7 +170,7 @@ public class AccesoDB {
         } catch (SQLException ex) { ex.printStackTrace(); }
         return personas;
     }
-    public Animal buscarAnimal(HashSet<Animal> animales, HashSet<Vacuna> vacunas,LocalDate fechaNacimiento,String descripcion,String especie,String genero,String nombre,String raza){
+    public Animal buscarAnimal(HashSet<Animal> animales, HashSet<Vacuna> vacunas,LocalDate fechaNacimiento,String descripcion,String especie,String genero,String nombre,String raza){ //Comparar vacunas hace que no ande asi que lo saque
         for (Animal animal : animales){
             if (animal.esIgual(vacunas, fechaNacimiento, descripcion, especie, genero, nombre, raza)){
                 return animal;

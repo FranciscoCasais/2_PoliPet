@@ -76,12 +76,7 @@ public class Animal {
         }
         return false;
     }
-    public int calcularEdad() { //Calculo la edad de esta manera para que me devuelva la edad en "dias" asi es mas exacto
-        int edad;
-        edad=(LocalDate.now().getDayOfYear()-fechaNacimiento.getDayOfYear()-1)*365+(LocalDate.now().getDayOfYear());
-        return edad;
-    }
-    public boolean esIgual(HashSet<Vacuna> vacunas,LocalDate fechaNacimiento,String descripcion,String especie,String genero,String nombre,String raza) {//Saque la comparacion de vacunas porque genera errores
+    public boolean esIgual(HashSet<Vacuna> vacunas,LocalDate fechaNacimiento,String descripcion,String especie,String genero,String nombre,String raza) {
         if (this.fechaNacimiento.equals(fechaNacimiento) && this.descripcion.equals(descripcion) && this.especie.equals(especie) && this.genero.equals(genero) && this.nombre.equals(nombre) && this.raza.equals(raza)){
             return true;
         }

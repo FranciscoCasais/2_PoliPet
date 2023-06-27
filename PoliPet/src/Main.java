@@ -2,6 +2,7 @@
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class Main {
@@ -21,15 +22,16 @@ public class Main {
         sist.setAnimales(bdd.obtenerValoresAnimal());
         sist.setPersonas(bdd.obtenerValoresPersona());
         sist.setSolicitudes(bdd.obtenerValoresSolicitud(sist.getAnimales(), sist.getPersonas()));
-        for (Animal animal : sist.getAnimales()) System.out.println(animal.getNombre());
         /*for(Animal a:sist.getAnimales()){
             System.out.println(a.toString());
         }
         for(Persona p: sist.getPersonas()){
             System.out.println(p.toString());
-        }
-        for(Solicitud s: sist.getSolicitudes()){
-            System.out.println(s.toString());
         }*/
+        HashSet<Solicitud> sol=sist.solicitudesNoValidas();
+        for(Solicitud s:sol){
+            System.out.println(s.toString());
+        }
+
     }
 }
