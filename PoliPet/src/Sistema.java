@@ -82,6 +82,7 @@ public class Sistema {
                 vacuna.setFecha(vacuna.getFecha().minusMonths(1));//O(1)
             }//O(o)     o = cantidad de vacunas por persona
         }//O(m * o)     m = cantidad de animales
+        System.out.println("Fechas corregidas");
     }//O(m * o)
        public HashSet<Persona> rompeRegla(){//E
             HashSet<Persona> lista = new HashSet<Persona>();//O(1)
