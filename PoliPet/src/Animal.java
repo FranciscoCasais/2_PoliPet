@@ -65,9 +65,19 @@ public class Animal {
         this.raza=raza;
     }
 
+    public int calcularEdad() {
+        int edad;
+        if(LocalDate.now().getDayOfYear()>=fechaNacimiento.getDayOfYear()){
+            edad=LocalDate.now().getYear()-fechaNacimiento.getYear();
+        }
+        else{
+            edad=LocalDate.now().getYear()-fechaNacimiento.getYear()-1;
+        }
+        return edad;
+    }
     @Override
     public String toString() {
-        return "Nombre: " + nombre + ", especie: " + especie + ", raza: " + raza + ", genero: " + genero;
+        return "Nombre: " + nombre + ", especie: " + especie + ", raza: " + raza + ", genero: " + genero + ", edad: " + calcularEdad() + " años";
     }
 
     public Boolean verificarVacuna() {

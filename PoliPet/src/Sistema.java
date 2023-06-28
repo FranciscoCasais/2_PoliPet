@@ -54,13 +54,11 @@ public class Sistema {
         Boolean verif=true;
         for(Animal an:animales){
             if(verif){
-                menor =an;
-                verif=false;
+                menor = an;
+                verif = false;
             }else {
-                if (an.getFechaNacimiento().getYear() > menor.getFechaNacimiento().getYear()) {
-                    if (an.getFechaNacimiento().getDayOfYear() > menor.getFechaNacimiento().getDayOfYear()) {
-                        menor = an;
-                    }
+                if (an.calcularEdad() < menor.calcularEdad()) {
+                    menor = an;
                 }
             }
         }
@@ -77,12 +75,20 @@ public class Sistema {
         return solicitudes_;//O(1)
     }//O(n)
     public void corregirFechas(){//D
+        boolean primer=true;
         for (Animal animal : animales){
             for (Vacuna vacuna : animal.getVacunas()){
-                vacuna.setFecha(vacuna.getFecha().minusMonths(1));//O(1)
+                if(primer){
+                    System.out.println("Antes: "+vacuna.getFecha());
+                    vacuna.setFecha(vacuna.getFecha().minusMonths(1));
+                    System.out.println("Despues: "+vacuna.getFecha());
+                    primer=false;
+                }
+                else {
+                    vacuna.setFecha(vacuna.getFecha().minusMonths(1));//O(1)
+                }
             }//O(o)     o = cantidad de vacunas por persona
         }//O(m * o)     m = cantidad de animales
-        System.out.println("Fechas corregidas");
     }//O(m * o)
        public HashSet<Persona> rompeRegla(){//E
             HashSet<Persona> lista = new HashSet<Persona>();//O(1)
@@ -125,6 +131,7 @@ public class Sistema {
                 fecha=s.getFechaAdopcion();
             }
         }
+        System.out.println("Fecha de adopcion: "+fecha);
         return masReciente;
     }
 }
