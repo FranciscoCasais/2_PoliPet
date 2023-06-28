@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.time.LocalDate;
+import java.time.Period;
 public class Sistema {
     private HashSet<Animal> animales;
     private HashSet<Persona> personas;
@@ -66,53 +67,51 @@ public class Sistema {
         return menor;
     }
     public HashSet<Solicitud> solicitudesNoValidas(){//C
-        HashSet<Solicitud> solicitudes_ = new HashSet<Solicitud>();
+        HashSet<Solicitud> solicitudes_ = new HashSet<Solicitud>();//O(1)
         for(Solicitud s : solicitudes){
-            if(!s.getSolicitante().mayorDeEdad()){
-                if(!s.getAnimal().verificarVacuna()){
-                    System.out.println(s.toString());
-                    solicitudes_.add(s);
-                }
-            }
-        }
-        return solicitudes_;
-    }
+            if(!(s.getSolicitante().mayorDeEdad()) || !(s.getAnimal().verificarVacuna())){
+                //System.out.println(s.toString());//O(1)
+                solicitudes_.add(s);//O(1)
+            }//O(1)
+        }//O(n)     n = cantidad de solicitudes
+        return solicitudes_;//O(1)
+    }//O(n)
     public void corregirFechas(){//D
         for (Animal animal : animales){
             for (Vacuna vacuna : animal.getVacunas()){
-                vacuna.setFecha(vacuna.getFecha().minusMonths(1));
-            }
-        }
-    }
+                vacuna.setFecha(vacuna.getFecha().minusMonths(1));//O(1)
+            }//O(o)     o = cantidad de vacunas por persona
+        }//O(m * o)     m = cantidad de animales
+    }//O(m * o)
        public HashSet<Persona> rompeRegla(){//E
-            HashSet<Persona> lista = new HashSet<Persona>();
+            HashSet<Persona> lista = new HashSet<Persona>();//O(1)
             for(Solicitud s : solicitudes){
                 for(Solicitud solicitud : solicitudes){
                     if(s.getSolicitante() == solicitud.getSolicitante() && !s.equals(solicitud)){
-                        Period periodo;
-                        if(solicitud.getFechaAdopcion().isAfter(s.getFechaAdopcion())){
-                            periodo=s.getFechaAdopcion().until(solicitud.getFechaAdopcion());
+                        Period periodo;//O(1)
+                        if(solicitud.getFechaAdopcion().isAfter(s.getFechaAdopcion())){//O(1)
+                            periodo=s.getFechaAdopcion().until(solicitud.getFechaAdopcion());//O(1)
                         }else{
-                            periodo=solicitud.getFechaAdopcion().until(s.getFechaAdopcion());
-                        }
+                            periodo=solicitud.getFechaAdopcion().until(s.getFechaAdopcion());//O(1)
+                        }//O(1)
                         if(periodo.getMonths()>=1 && !lista.contains(s.getSolicitante())){
-                            lista.add(s.getSolicitante());
-                        }
-                    }
-                }
-            }
-            return lista;
-        }
+                            lista.add(s.getSolicitante());//O(1)
+                        }//O(1)
+                    }//O(1)
+                }//O(n)
+            }//O(n * n)
+            return lista;//O(1)
+        }//O(n * n)
     public HashSet<Persona> personasExperimentadas(){//F
-        HashSet<Persona> personasExperimentadas_ = new HashSet<Persona>();
-        for (Solicitud solicitud : solicitudes) if (solicitud.getSolicitante().getExperiencia()) personasExperimentadas_.add(solicitud.getSolicitante());
-        return personasExperimentadas_;
-    }
+        HashSet<Persona> personasExperimentadas_ = new HashSet<Persona>();//O(1)
+        for (Solicitud solicitud : solicitudes) if (solicitud.getSolicitante().getExperiencia()) personasExperimentadas_.add(solicitud.getSolicitante());//O(n)
+        return personasExperimentadas_;//O(1)
+    }//O(n)
     public HashSet<String> especiesSolicitadas(){//G
-        HashSet<String> especies = new HashSet<String>();
-        for (Solicitud solicitud : solicitudes) if (!especies.contains(solicitud.getAnimal().getEspecie())) especies.add(solicitud.getAnimal().getEspecie());
-        return especies;
-    }
+        HashSet<String> especies = new HashSet<String>();//O(1)
+        for (Solicitud solicitud : solicitudes) if (!especies.contains(solicitud.getAnimal().getEspecie())) especies.add(solicitud.getAnimal().getEspecie());//O(n)
+        return especies;//O(1)
+    }//O(n)
      public Animal animalMasReciente(){//H
         Animal masReciente = null;
         LocalDate fecha = null;
