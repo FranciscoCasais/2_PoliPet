@@ -300,6 +300,21 @@ public class AccesoDB {
         } catch (SQLException ex) { ex.printStackTrace(); }
         return personas;
     }
+     public HashSet<Animal> procedureA(HashSet<Animal> animales){  //Llama a la procedure A del mysql
+        ResultSet data;
+        String consulta= "CALL animalesSolicitados()";
+        HashSet<Animal> animals=new HashSet<Animal>();
+        try {
+            PreparedStatement sentenciaSQL = conexion.prepareStatement(consulta);
+            data = sentenciaSQL.executeQuery(consulta);
+            while (data.next()) {
+                animals.add(obtenerAnimalPorIdEnJava(data.getInt("Animal_ID"), animales));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return animals;
+    }
 }
 //File
 //Project Structure
