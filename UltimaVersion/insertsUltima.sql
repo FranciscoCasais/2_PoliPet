@@ -244,6 +244,7 @@ INSERT INTO `PoliPet`.`DetallesVacuna` (`Animal_ID`, `Vacuna_ID`, `Dosis`, `Fech
 INSERT INTO `PoliPet`.`Solicitud` (`Persona_ID`, `Animal_ID`, `Fecha_envio`, `Fecha_adopcion`, `Estado_ID`) VALUES
 (1, 1, '2023-06-01', NULL, 1),
 (2, 2, '2023-06-02', '2023-06-02', 2),
+(2, 51, '2023-06-10', '2023-06-10', 2),
 (3, 3, '2023-06-03', NULL, 3),
 (4, 4, '2023-06-04', NULL, 1),
 (5, 5, '2023-06-05', '2023-06-06', 2),
