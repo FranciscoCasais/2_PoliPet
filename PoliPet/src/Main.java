@@ -80,5 +80,10 @@ public class Main {
 
         System.out.println("\nEjercicio H: Muestra el animal más recientemente adoptado en el sistema");
         System.out.println(sist.animalMasReciente().toString());
+
+         HashSet<Animal> an=bdd.procedureA(sist.getAnimales());
+        for(Animal a : an){
+            System.out.println(a.toString());
+        }
     }
 }
