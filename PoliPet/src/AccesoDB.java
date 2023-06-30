@@ -12,7 +12,7 @@ public class AccesoDB {
         this.nombreBaseDeDatos = nombreBaseDeDatos;
         this.nombreTabla = nombreTabla;
     }
-    public void conectar(String user, String password) throws SQLException {
+    public void conectar(String user, String password) throws SQLException { // Establece la conexión con la base de datos en MySQL
         String url = "jdbc:mysql://localhost:3306/"+nombreBaseDeDatos;
         try {
             conexion = DriverManager.getConnection(url, user, password);
