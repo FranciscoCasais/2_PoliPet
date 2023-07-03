@@ -86,7 +86,7 @@ public class Animal {
         }
         return false;
     }
-    public boolean esIgual(HashSet<Vacuna> vacunas,LocalDate fechaNacimiento,String descripcion,String especie,String genero,String nombre,String raza) { // Verifica si dos animales son iguales
+    public boolean esIgual(LocalDate fechaNacimiento,String descripcion,String especie,String genero,String nombre,String raza) { // Verifica si dos animales son iguales
         if (this.fechaNacimiento.equals(fechaNacimiento) && this.descripcion.equals(descripcion) && this.especie.equals(especie) && this.genero.equals(genero) && this.nombre.equals(nombre) && this.raza.equals(raza)){
             return true;
         }
