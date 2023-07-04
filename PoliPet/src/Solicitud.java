@@ -50,6 +50,6 @@ public class Solicitud {
     }
     @Override
     public String toString() {
-        return  "solicitante: " + solicitante.getNombre() + ", animal: " + animal.getNombre() + ", estado: "+estado.getEstado()+ ", fechaAdopcion: " + fechaAdopcion;
+        return  "solicitante: " + solicitante.getNombre() + ", animal: " + animal.getNombre() + ", estado: "+estado+ ", fechaAdopcion: " + fechaAdopcion;
     }
 }
