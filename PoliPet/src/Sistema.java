@@ -190,7 +190,7 @@ public class Sistema {
         Animal masReciente = null;
         LocalDate fecha = null;
         for(Solicitud s: solicitudes){
-            if (masReciente==null && !s.getFechaAdopcion().equals(null)){
+            if (masReciente==null && s.getFechaAdopcion()!=null){
                 masReciente=s.getAnimal();
                 fecha=s.getFechaAdopcion();
             }else if(s.getEstado()==Estado.APROBADA && !s.getFechaAdopcion().equals(null) && s.getFechaAdopcion().isAfter(fecha)){
