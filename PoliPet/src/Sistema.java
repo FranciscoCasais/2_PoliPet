@@ -142,18 +142,11 @@ public class Sistema {
         return solicitudes_;//O(1)
     }//O(n)
     public void corregirFechas(){ // D - Corrige las fechas mal cargadas en el sistema restándoles un mes
-        boolean primer=true;
         for (Animal animal : animales){
             for (Vacuna vacuna : animal.getVacunas()){
-                if(primer){
-                    System.out.println("Antes: "+vacuna.getFecha());
-                    vacuna.setFecha(vacuna.getFecha().minusMonths(1));
-                    System.out.println("Despues: "+vacuna.getFecha());
-                    primer=false;
-                }
-                else {
-                    vacuna.setFecha(vacuna.getFecha().minusMonths(1));//O(1)
-                }
+                System.out.println("Antes: "+vacuna.getFecha());
+                vacuna.setFecha(vacuna.getFecha().minusMonths(1));
+                System.out.println("Despues: "+vacuna.getFecha());
             }//O(o)     o = cantidad de vacunas por persona
         }//O(m * o)     m = cantidad de animales
     }//O(m * o)
