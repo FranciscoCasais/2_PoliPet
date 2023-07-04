@@ -193,7 +193,7 @@ public class Sistema {
             if (masReciente==null && s.getFechaAdopcion()!=null){
                 masReciente=s.getAnimal();
                 fecha=s.getFechaAdopcion();
-            }else if(s.getEstado()==Estado.APROBADA && !s.getFechaAdopcion().equals(null) && s.getFechaAdopcion().isAfter(fecha)){
+            }else if(s.getEstado()==Estado.APROBADA && s.getFechaAdopcion()!=null && s.getFechaAdopcion().isAfter(fecha)){
                 masReciente=s.getAnimal();
                 fecha=s.getFechaAdopcion();
             }
