@@ -6,20 +6,12 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        List<String> tablas = Arrays.asList("Estado", "Persona", "Solicitud", "Animal", "DetallesVacuna", "Vacuna");
-        AccesoDB bdd = new AccesoDB("PoliPet", tablas);
-
-        try { bdd.conectar("alumno","alumnoipm"); }
-        catch (SQLException ex) { System.out.println(ex); }
-
         Sistema sist=new Sistema();
-        sist.setAnimales(bdd.obtenerValoresAnimal());
-        sist.setPersonas(bdd.obtenerValoresPersona());
-        sist.setSolicitudes(bdd.obtenerValoresSolicitud(sist.getAnimales(), sist.getPersonas()));
+        sist.cargarDatos();
         HashSet<Solicitud> solicituds = sist.solicitudesNoValidas();
 
         System.out.println("\nEjercicio A: Lista de todos los animales presentes en una solicitud de adopcion");
-        for (Animal animal_ : bdd.procedureA(sist.getAnimales())) System.out.println(animal_);;
+        for (Animal animal_ : sist.animalesPorSolicitudDeAdopcion()) System.out.println(animal_);;
 
         System.out.println("\nEjercicio B: El animal de menor edad disponible para adopción por especie");
         HashMap<String,Animal> menorAnimalPorEspecie=sist.menorAnimalPorEspecie();
@@ -74,9 +66,9 @@ public class Main {
         System.out.println("\nEjercicio H: Muestra el animal más recientemente adoptado en el sistema");
         System.out.println(sist.animalMasReciente().toString());
 
-         HashSet<Animal> an=bdd.procedureA(sist.getAnimales());
+         /*HashSet<Animal> an=bdd.procedureA(sist.getAnimales());
         for(Animal a : an){
             System.out.println(a.toString());
-        }
+        }*/
     }
 }
