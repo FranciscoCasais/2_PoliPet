@@ -69,7 +69,7 @@ public class Sistema {
         }
         return new Persona();
     }
-    public void cargarDatos(){
+    public void cargarDatos(){ // Carga los datos de la base de datos a esta clase
         HashMap<Integer, HashMap<String, Object>> animales = accesoDB.obtenerValoresAnimal();
         for (Map.Entry<Integer, HashMap<String, Object>> animal : animales.entrySet()){
             HashSet <Vacuna> vacunas = new HashSet<Vacuna>();
@@ -106,7 +106,7 @@ public class Sistema {
             }
         }
     }
-    public HashSet<Animal> animalesPorSolicitudDeAdopcion(){
+    public HashSet<Animal> animalesPorSolicitudDeAdopcion(){ // A - Devuelve los animales por solicitud de adopción
         HashSet<Animal> animales = new HashSet<>();
         for (Map.Entry<Integer, HashMap<String, Object>> animal_ : accesoDB.procedureA().entrySet()){
             animales.add(buscarAnimal(((LocalDate) animal_.getValue().get("Fecha_nacimiento")), ((String) animal_.getValue().get("Descripcion")), ((String) animal_.getValue().get("Especie")), ((String) animal_.getValue().get("Genero")), ((String) animal_.getValue().get("Nombre")), ((String) animal_.getValue().get("Raza"))));
