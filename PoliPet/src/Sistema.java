@@ -155,9 +155,9 @@ public class Sistema {
             for(Solicitud s : solicitudes){
                 for(Solicitud solicitud : solicitudes){
                     if(s.getSolicitante() == solicitud.getSolicitante() && !s.equals(solicitud)){
-                        Period periodo;//O(1)
+                        Period periodo;//O(1) - Period clase la cual almacena un periodo de tiempo
                         if(solicitud.getFechaAdopcion().isAfter(s.getFechaAdopcion())){//O(1)
-                            periodo=s.getFechaAdopcion().until(solicitud.getFechaAdopcion());//O(1)
+                            periodo=s.getFechaAdopcion().until(solicitud.getFechaAdopcion());//O(1) - until permite almacenar el tiempo entre dos fechas
                         }else{
                             periodo=solicitud.getFechaAdopcion().until(s.getFechaAdopcion());//O(1)
                         }//O(1)
