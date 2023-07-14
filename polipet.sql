@@ -181,9 +181,9 @@ END //
 
 create function masAdopciones() returns varchar(45) deterministic
 begin
-	declare email varchar(45);
-    select Email into email from Persona inner join Solicitud on ID=Persona_ID where count(*)=(select max(cantidadAdopciones) from (select count(*) as "cantidadAdopciones" from Solicitud group by Persona_ID) as tabla1);
-    return email;
+	declare resultado varchar(45);
+	select Email into resultado from Persona join Solicitud on ID=Persona_ID group by Persona_ID having count(*)=(select max(cantidadAdopciones) from (select count(*) as "cantidadAdopciones" from Solicitud where Estado_ID=2 group by Persona_ID) as tabla1);
+	return resultado;
 end //
 
 create procedure especiesPorSolicitudDeAdopcion()
