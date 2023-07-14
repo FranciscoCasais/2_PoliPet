@@ -165,7 +165,7 @@ BEGIN
 	declare porcentaje float;
     declare aux int;
     declare total int;
-    select count(*) into total from animal where especie=Especie;
+    select count(*) into total from Animal where especie=Especie;
     select count(*) into aux from Animal where especie=Especie and ID in (select Animal_ID from DetallesVacuna);                      
 	set porcentaje = aux*100/total;
     RETURN porcentaje;
