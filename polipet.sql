@@ -186,9 +186,9 @@ begin
     return email;
 end //
 
-create procedure especiesSolicitadas()
+create procedure especiesPorSolicitudDeAdopcion()
 begin
-	select Especie from Animal inner join Solicitud on ID=Animal_ID;
+	select Persona_ID, Animal_ID, Especie from Solicitud join Animal on Animal_ID = ID;
 end //
 
 delimiter ;
